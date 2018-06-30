@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
             value = { DataSourceConfig.class, WebMvcConfig.class })
         })
-@Import(value = { DataSourceConfig.class, WebMvcConfig.class })
+@Import(value = { WebMvcConfig.class })
 public class RootContextConfig {
 
 }
