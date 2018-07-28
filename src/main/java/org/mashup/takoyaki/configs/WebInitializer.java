@@ -20,6 +20,7 @@ public class WebInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcherServlet", new DispatcherServlet(rootContext));
 
         dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/takoyaki");
+        dispatcher.addMapping("/");
     }
+
 }
