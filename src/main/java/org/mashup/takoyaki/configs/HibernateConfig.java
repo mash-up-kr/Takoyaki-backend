@@ -29,7 +29,7 @@ public class HibernateConfig {
     @Bean(destroyMethod = "close")
     public DataSource dataSource() throws IOException {
         Properties dataSourceProps = PropertiesLoaderUtils.loadProperties(
-                this.pathMatchingResourcePatternResolver.getResource("classpath:datasource.properties"));
+                this.pathMatchingResourcePatternResolver.getResource("classpath:db.properties"));
 
         DataSource dataSource = new DataSource();
 
@@ -88,10 +88,13 @@ public class HibernateConfig {
 
     private Properties jpaProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         properties.setProperty("hibernate.format_sql", Boolean.toString(true));
-
+        properties.setProperty("spring.jpa.hibernate.naming_strategy", "org.hibernate.cfg.EJB3NamingStrategy");
+        properties.setProperty("hibernate.connection.CharSet", "UTF-8");
+        properties.setProperty("hibernate.connection.characterEncoding", "UTF-8");
+        properties.setProperty("hibernate.connection.useUnicode", Boolean.toString(true));
         return properties;
     }
 
