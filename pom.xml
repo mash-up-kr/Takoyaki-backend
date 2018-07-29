@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.0.4.RELEASE</spring.version>
         <java.version>1.8</java.version>
         <jackson.version>2.9.5</jackson.version>
@@ -64,7 +65,7 @@
             <version>2.1.1</version>
         </dependency>
 
-        <!-- jpa -->
+        <!-- spring data jpa -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -129,6 +130,14 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <webappDirectory>./target</webappDirectory>
                 </configuration>
             </plugin>
         </plugins>
