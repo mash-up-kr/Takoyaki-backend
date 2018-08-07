@@ -1,7 +1,9 @@
 package org.mashup.takoyaki.service;
 
+import org.mashup.takoyaki.dto.TokenDto;
+
 public interface UserService {
 
-    String issueToken();
+    TokenDto issueNewToken();
 
 }
