@@ -1,5 +1,6 @@
 package org.mashup.takoyaki.entity.value;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class AccessToken {
     private String token;
 
     @JsonProperty(value = "created_at")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
     @Column(name = "token_created_at")
     private LocalDateTime createdAt;
 
