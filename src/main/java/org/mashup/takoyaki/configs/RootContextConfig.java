@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = "org.mashup.takoyaki",
         excludeFilters =  {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
-            value = { HibernateConfig.class, WebMvcConfig.class })
+            value = { HibernateConfig.class, WebMvcConfig.class, MultipartConfig.class })
         })
-@Import(value = { HibernateConfig.class, WebMvcConfig.class })
+@Import(value = { HibernateConfig.class, WebMvcConfig.class, MultipartConfig.class })
 public class RootContextConfig {
 
 }
