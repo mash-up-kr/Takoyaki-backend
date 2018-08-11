@@ -108,6 +108,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 
         <!-- lombok -->
         <dependency>
@@ -143,8 +148,6 @@
             <version>1.4.196</version>
             <scope>test</scope>
         </dependency>
-
-
 
     </dependencies>
 
