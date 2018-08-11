@@ -66,4 +66,10 @@ public class S3Util {
         String imgName = (fileName).replace(File.separatorChar, '/');
         return amazonS3.generatePresignedUrl(new GeneratePresignedUrlRequest(bucketName, imgName)).toString();
     }
+
+    public String generateFileName(String fileName) {
+//      Long createdAtUnixTimestamp = System.currentTimeMillis() / 1000;
+        String extension = fileName.substring(fileName.lastIndexOf("."));
+        return UUID.randomUUID().toString() + "_" + LocalDateTime.now() + extension;
+    }
 }
