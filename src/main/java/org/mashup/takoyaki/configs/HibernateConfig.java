@@ -46,7 +46,8 @@ public class HibernateConfig {
 
         dataSource.setValidationQuery(dataSourceProps.getProperty("datasource.dbcp2.validation-query"));
         dataSource.setValidationQueryTimeout(Integer.parseInt(dataSourceProps.getProperty("datasource.dbcp2.validation-query-timeout")));
-        dataSource.setMinEvictableIdleTimeMillis(-1);
+        dataSource.setTimeBetweenEvictionRunsMillis(Integer.parseInt(dataSourceProps.getProperty("datasource.dbcp2.time-between-eviction-runs-millis")));
+        dataSource.setNumTestsPerEvictionRun(Integer.parseInt(dataSourceProps.getProperty("datasource.dbcp2.num-tests-per-eviction-run")));
 
         return dataSource;
     }

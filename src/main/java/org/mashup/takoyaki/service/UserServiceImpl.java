@@ -1,20 +1,54 @@
 package org.mashup.takoyaki.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.mashup.takoyaki.dto.UpdateUserDto;
+import org.mashup.takoyaki.entity.User;
 import org.mashup.takoyaki.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author 한태웅
+ * @since 2018-08-11
+ */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    //TODO 해싱알고리즘 이용하여 토큰 발급을 해야합니다.(ex. sha256, md5...) 토큰 발급과 동시에 유저 테이블에 정보 등록 필수
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
-    public String issueToken() {
-        return "test-token-21937&^23178924jahf9";
+    public User registerUser() {
+        User user = new User();
+        user.setAccessToken(issueNewToken());
+        userRepository.save(user);
+        log.info("등록된 유저 정보 : {}", user.toString());
+        return user;
+    }
+
+    @Override
+    public void updateUserInfo(UpdateUserDto updateUserDto) {
+        User user = userRepository.findByAccessToken(updateUserDto.getToken())
+                .orElseThrow(RuntimeException::new);
+
+        user.setEamil(updateUserDto.getEmail());
+        if (!user.getNickname().equals(updateUserDto.getNickname())) {
+            user.setNickname(updateUserDto.getNickname());
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void uploadProfileImage(MultipartFile imageFile) {
     }
 }
