@@ -24,6 +24,8 @@ public class MapController {
     public ApiResponseModel<List> getMapTruck(@RequestParam("latitude")double latitude, @RequestParam("longitude")double longitude) {
 
         System.out.println("ㅎㅎ");
+
+        System.out.println("ㅋㅋ");
         ApiResponseModel<List> response = new ApiResponseModel<>();
         response.setCode(HttpStatus.OK.value());
         response.setMsg(HttpStatus.OK.toString());
