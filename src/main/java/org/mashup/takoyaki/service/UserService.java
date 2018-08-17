@@ -29,7 +29,8 @@ public interface UserService {
     }
 
     User registerUser();
-    void updateUserInfo(UpdateUserDto user);
+    User getUserByToken(String accessToken) throws RuntimeException;
+    void updateUserInfo(UpdateUserDto user, String token) throws RuntimeException;
     void uploadProfileImage(MultipartFile imageFile);
 
 }

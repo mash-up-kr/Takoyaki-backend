@@ -36,8 +36,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserInfo(UpdateUserDto updateUserDto) {
-        User user = userRepository.findByAccessToken(updateUserDto.getToken())
+    public User getUserByToken(String accessToken) {
+        return userRepository.findByAccessToken_Token(accessToken).orElseThrow(RuntimeException::new);
+    }
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Override
+    public void updateUserInfo(UpdateUserDto updateUserDto, String token) {
+        User user = userRepository.findByAccessToken_Token(token)
                 .orElseThrow(RuntimeException::new);
 
         user.setEamil(updateUserDto.getEmail());
