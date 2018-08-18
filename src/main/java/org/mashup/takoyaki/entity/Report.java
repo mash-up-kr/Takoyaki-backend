@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -39,6 +40,9 @@ public class Report {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "expiration_date")
+    private LocalDate expirationDate;
 
     @PrePersist
     public void initData() {
