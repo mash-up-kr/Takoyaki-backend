@@ -11,22 +11,27 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 public class S3Util {
-    //bucketName
-    private String bucketName = "mashup-takoyaki";  //생성한 버킷 명
-    private String accessKey = "";  //
-    private String secretKey = "";  //
+
+    private String bucketName = "";
+    private String accessKey = "";
+    private String secretKey = "";
+    private String hostName = "";
 
     private AmazonS3 amazonS3;
-    Logger logger = LoggerFactory.getLogger(S3Util.class);
 
     public S3Util() {
         AWSCredentials creds = new BasicAWSCredentials(accessKey, secretKey);
@@ -38,38 +43,30 @@ public class S3Util {
                         .build();
     }
 
-    // 업로드하고 파일 URL 반환
-    public String uploadFile(String bucketName, String fileName, InputStream inputStream, ObjectMetadata objectMetadata) {
-        if ( amazonS3 != null ) {
+    public String uploadFileToS3(String fileName, MultipartFile file) {
+
+        if (amazonS3 != null) {
+            InputStream inputStream = null;
             try {
+                inputStream = file.getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentType(file.getContentType());
+                metadata.setContentLength(file.getSize());
+
                 PutObjectRequest putObjectRequest =
-                        new PutObjectRequest(bucketName, fileName, inputStream, objectMetadata);
+                        new PutObjectRequest(bucketName, fileName, inputStream, metadata);
 
-                // file permission
                 putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
-
-                // upload file
                 amazonS3.putObject(putObjectRequest);
 
-            } catch ( AmazonServiceException ase) {
+            } catch (AmazonServiceException ase) {
                 ase.printStackTrace();
             }
-
-
         }
-        String imgName = (fileName).replace(File.separatorChar, '/');
-        return amazonS3.generatePresignedUrl(new GeneratePresignedUrlRequest(bucketName, imgName)).toString();
-
-    }
-
-    public String getFileURL(String bucketName, String fileName) {
-        String imgName = (fileName).replace(File.separatorChar, '/');
-        return amazonS3.generatePresignedUrl(new GeneratePresignedUrlRequest(bucketName, imgName)).toString();
-    }
-
-    public String generateFileName(String fileName) {
-//      Long createdAtUnixTimestamp = System.currentTimeMillis() / 1000;
-        String extension = fileName.substring(fileName.lastIndexOf("."));
-        return UUID.randomUUID().toString() + "_" + LocalDateTime.now() + extension;
+        return "https://" + hostName +  "/" + bucketName + "/" + fileName;
     }
 }
