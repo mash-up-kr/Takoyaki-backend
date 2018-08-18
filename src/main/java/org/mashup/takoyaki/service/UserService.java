@@ -1,6 +1,7 @@
 package org.mashup.takoyaki.service;
 
 import com.google.common.hash.Hashing;
+import org.mashup.takoyaki.common.exception.UserNotFoundException;
 import org.mashup.takoyaki.dto.UpdateUserDto;
 import org.mashup.takoyaki.entity.value.AccessToken;
 import org.mashup.takoyaki.entity.User;
@@ -29,7 +30,8 @@ public interface UserService {
     }
 
     User registerUser();
-    void updateUserInfo(UpdateUserDto user);
+    User getUserByToken(String accessToken) throws UserNotFoundException;
+    void updateUserInfo(UpdateUserDto user, String token) throws UserNotFoundException;
     void uploadProfileImage(MultipartFile imageFile);
 
 }

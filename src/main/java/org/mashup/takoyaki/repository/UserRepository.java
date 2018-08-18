@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByAccessToken(String token);
+    Optional<User> findByAccessToken_Token(String token);
 
 }
