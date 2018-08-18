@@ -1,6 +1,7 @@
 package org.mashup.takoyaki.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mashup.takoyaki.common.exception.UserNotFoundException;
 import org.mashup.takoyaki.dto.UpdateUserDto;
 import org.mashup.takoyaki.entity.User;
 import org.mashup.takoyaki.repository.UserRepository;
@@ -36,15 +37,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByToken(String accessToken) {
-        return userRepository.findByAccessToken_Token(accessToken).orElseThrow(RuntimeException::new);
+    public User getUserByToken(String accessToken) throws UserNotFoundException {
+        return userRepository.findByAccessToken_Token(accessToken).orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
-    public void updateUserInfo(UpdateUserDto updateUserDto, String token) {
+    public void updateUserInfo(UpdateUserDto updateUserDto, String token) throws UserNotFoundException {
         User user = userRepository.findByAccessToken_Token(token)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(UserNotFoundException::new);
 
         user.setEamil(updateUserDto.getEmail());
         if (!user.getNickname().equals(updateUserDto.getNickname())) {
