@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mashup.takoyaki.configs.RootContextConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
@@ -40,7 +39,7 @@ public class SpringTestSupport {
 
         Assert.assertNotNull(servletContext);
         Assert.assertTrue(servletContext instanceof MockServletContext);
-        Assert.assertNotNull(wac.getBean("rootContext"));
+        Assert.assertNotNull(wac.getBean("rootContextConfig"));
     }
 
 }
