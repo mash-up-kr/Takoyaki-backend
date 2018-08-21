@@ -1,8 +1,10 @@
 package org.mashup.takoyaki.configs;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -64,7 +66,7 @@ public class HibernateConfig {
 
         emf.setJpaVendorAdapter(jpaVendorAdapter);
         emf.setPersistenceUnitName("takoyaki");
-        emf.setJpaProperties(jpaProperties());
+        emf.setJpaProperties(jpaDevProperties());
 
         return emf;
     }
@@ -87,7 +89,7 @@ public class HibernateConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    private Properties jpaProperties() {
+    private Properties jpaDevProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "create");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
