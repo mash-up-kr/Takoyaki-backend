@@ -33,10 +33,6 @@ public class ReportController {
 
         log.info("요청 받은 트럭 정보 : {}", report.toString());
 
-        if (accessToken == null) {
-            throw new UnAuthorizedException();
-        }
-
         if(photoFiles.length > 3) {
             throw new BadRequestException();
         }
