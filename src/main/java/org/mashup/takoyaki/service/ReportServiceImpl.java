@@ -43,35 +43,22 @@ public class ReportServiceImpl implements ReportService{
     @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public void report(String accessToken, MultipartFile[] photoFiles, ReportDto reportDto) {
-
         Optional<User> userByAccessToken = userRepository.findByAccessToken_Token(accessToken);
         User user = userByAccessToken.orElseThrow(UserNotFoundException::new);
 
         Optional<Region> regionByRegionType = regionRepository.findByRegionType(reportDto.getRegionName());
         Region region = regionByRegionType.orElseThrow(BadRequestException::new);
 
-        Report report;
-        report = new Report();
-        report.setUserId(user);
-        report.setTruckName(reportDto.getTruckName());
-        report.setDescription(reportDto.getDescription());
-        report.setExpirationDate(reportDto.getExpirationDate());
-        report.setRegionId(region);
-        report.setLongitude(reportDto.getLongitude());
-        report.setLatitude(reportDto.getLatitude());
-        report.setReportedAt(LocalDateTime.now());
-        reportRepository.save(report);
+        Report report = saveReport(reportDto, user, region);
+        saveFoodTruckImage(photoFiles, report);
+    }
 
-        log.info("등록된 트럭 정보 : {}", report);
-
+    private void saveFoodTruckImage(MultipartFile[] photoFiles, Report report) {
         if(photoFiles.length != 0) {
 
             for (MultipartFile file : photoFiles) {
-
                 String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-                String newFileName = "trucks/" + report.getId() + "/" + LocalDateTime.now() + extension;
-                S3Util s3 = new S3Util();
-                String fileUrl = s3.uploadFileToS3(newFileName, file);
+                String fileUrl = S3Util.uploadFile(String.format("trucks/%s/%s%s", report.getId(), LocalDateTime.now(), extension), file);
 
                 FoodTruckImage foodTruckImage = new FoodTruckImage();
                 foodTruckImage.setReportId(report);
@@ -82,5 +69,19 @@ public class ReportServiceImpl implements ReportService{
             }
 
         }
+    }
+
+    private Report saveReport(ReportDto reportDto, User user, Region region) {
+        Report report = new Report();
+        report.setUserId(user);
+        report.setTruckName(reportDto.getTruckName());
+        report.setDescription(reportDto.getDescription());
+        report.setExpirationDate(reportDto.getExpirationDate());
+        report.setRegionId(region);
+        report.setLongitude(reportDto.getLongitude());
+        report.setLatitude(reportDto.getLatitude());
+        report.setReportedAt(LocalDateTime.now());
+        reportRepository.save(report);
+        return report;
     }
 }
