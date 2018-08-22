@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequestMapping(value = "/v1")
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -30,7 +30,7 @@ public class UserController {
     public ApiResponseModel<AccessToken> issueToken() {
         ApiResponseModel<AccessToken> response = new ApiResponseModel<>();
         response.setCode(HttpStatus.OK.value());
-        response.setMsg(HttpStatus.OK.toString());
+        response.setMsg(HttpStatus.OK.getReasonPhrase());
         response.setResult(userService.registerUser().getAccessToken());
 
         return response;
