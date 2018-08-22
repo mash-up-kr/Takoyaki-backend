@@ -17,23 +17,13 @@ import java.time.LocalDateTime;
 
 public class UserServiceTest extends SpringTestSupport {
 
-    private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-
     @Test
     public void userServiceTest() {
-        ServletContext servletContext = wac.getServletContext();
+        ServletContext servletContext = super.wac.getServletContext();
 
         Assert.assertNotNull(servletContext);
         Assert.assertTrue(servletContext instanceof MockServletContext);
-        Assert.assertNotNull(wac.getBean("userController"));
+        Assert.assertNotNull(super.wac.getBean("userServiceImpl"));
     }
 
     @Test
