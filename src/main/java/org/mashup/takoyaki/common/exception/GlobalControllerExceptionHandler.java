@@ -19,6 +19,8 @@ public class GlobalControllerExceptionHandler {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
             case 4004:
                 return ResponseEntity.status(HttpStatus.OK).body(error);
+            case 500:
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
             default:
                 return ResponseEntity.status(HttpStatus.OK).body(new ErrorModel(0, "정의되지 않은 exception이 발생하였습니다."));
         }
