@@ -1,8 +1,11 @@
 package org.mashup.takoyaki.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.mashup.takoyaki.dto.ReportDto;
 import org.mashup.takoyaki.entity.Report;
 import org.mashup.takoyaki.repository.MapRepository;
 import org.mashup.takoyaki.repository.UserRepository;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,54 +20,98 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import sun.rmi.runtime.Log;
 
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-@Service
+@Slf4j
+@Service("mapService")
 public class MapServiceImpl implements MapService {
-
-    private static final Logger logger = Logger.getLogger(MapServiceImpl.class.getName());
 
     private MapRepository mapRepository;
     private double latitude;
     private double longitude;
 
+    @Autowired
+    MapService mapService;
+
     //**왜 이렇게 값을 받을까??
     @Autowired
-    public MapServiceImpl(MapRepository mapRepository) { this.mapRepository= mapRepository; }
+    public MapServiceImpl(MapRepository mapRepository) {
+        this.mapRepository= mapRepository;
+    }
 
-//    public Page<Report> findAll(Pageable pageable){
-//        return mapRepository.findAll(pageable);
-//    }
+
 
     @Override
-    public List getMapTruck(double userLatitude, double userLongitude){
+    public List<Report> getMapTruck(double userLatitude, double userLongitude){
+       //report = mapRepository.find
 
-        List<Report> truckList;
-        List<Report> mapTruckList = new ArrayList<>();
+        log.info("from Client lat");
+        log.info(Double.toString(userLatitude));
 
-        Page<Report> reports = mapRepository.findAll(PageRequest.of(1,20));
-        truckList = reports.getContent();
+        Page<Report> aa = mapRepository.findAll();
+       // log.info("findall truck info ={}", aa.get(0).getLatitude().toString());
 
-        System.out.println("로그");
-        System.out.println(truckList.get(0).getLatitude());
-        logger.info("로그");
+        //PageRequest pageRequest = new PageRequest(1, 20 );
+
+//       PagingAndSortingRepository<Report, Long> repository = mapRepository;
+//        Page<Report> reports = repository.findAll(new PageRequest(0,1));
+//        List<Report> mapTruckList = reports.getContent();
+
+
+      //  PageRequest pageRequest = new PageRequest(0,1, new Sort(Sort.Direction.DESC,"id"));
+
+//        Page<Report> result = mapRepository.findById(Integer.toUnsignedLong(1), pageRequest);
+
+        //List<Report> reports = result.getContent();
+        //List<Report>  mapTruckList = ((MapRepository) repository).findAll();
+
+
+        //List<Report> reportList = mapRepository.findAll(new PageRequest(0, 4));
+
+        log.info("result size");
+//        log.info(Integer.toString(result.getSize()));
+//        log.info(Long.toString(result.getTotalElements()));
+
+
+        log.info("reports size");
+//       log.info(Integer.toString(reports.size()));
+        log.info("mapTruckList size");
+        //log.info(Integer.toString(mapTruckList.size()));
+
+
+        log.info("reports length");
+//log.info(Integer.toString(reports.stream().toArray().length));
+        log.info("get map data ");
+//        log.info(reports.get(0).getLatitude().toString());
+
+
+        //Page<Report> reports = mapRepository.findAll(PageRequest.of(1,20));
+       // List<Report> truckLists = new ArrayList<Report>();
 
 
 
-        for(int i=0; i<truckList.size();i++) {
+        //log.info(mapTruckList.get(0).getLatitude().toString());
 
-            this.latitude = truckList.get(i).getLatitude();
-            this.longitude = truckList.get(i).getLongitude();
 
-            double distanceResult = distance(latitude, longitude, this.latitude, this.longitude);
+        //System.out.println(truckList.get(0).getLatitude());
+       // log.info(truckList.get(0).getLatitude().toString());
 
-            if(distanceResult <= 0.25){
-                mapTruckList.add(truckList.get(i));
-            }
-        }
-        return truckList;
+
+//        for(int i=0; i<truckList.size();i++) {
+//
+//            this.latitude = truckList.get(i).getLatitude();
+//            this.longitude = truckList.get(i).getLongitude();
+//
+//            double distanceResult = distance(latitude, longitude, this.latitude, this.longitude);
+//
+//            if(distanceResult <= 0.25){
+//                mapTruckList.add(truckList.get(i));
+//            }
+//        }
+//        return truckList;
+        return reports;
 
     }
 
@@ -75,7 +122,4 @@ public class MapServiceImpl implements MapService {
         return 12742 * Math.asin(Math.sqrt(a));
 
     }
-
-
-
 }

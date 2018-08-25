@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setAccessToken(issueNewToken());
         userRepository.save(user);
-        log.info("등록된 유저 정보 : {}", user.toString());
+        log.info("등록된 유저 정보 usersssss : {}", user.toString());
         return user;
     }
 
