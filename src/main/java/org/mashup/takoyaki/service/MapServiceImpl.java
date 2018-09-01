@@ -50,68 +50,12 @@ public class MapServiceImpl implements MapService {
         log.info("from Client lat");
         log.info(Double.toString(userLatitude));
 
-        Page<Report> aa = mapRepository.findAll();
-       // log.info("findall truck info ={}", aa.get(0).getLatitude().toString());
-
-        //PageRequest pageRequest = new PageRequest(1, 20 );
-
-//       PagingAndSortingRepository<Report, Long> repository = mapRepository;
-//        Page<Report> reports = repository.findAll(new PageRequest(0,1));
-//        List<Report> mapTruckList = reports.getContent();
+        Page<Report> aa = mapRepository.findAll(PageRequest.of(0,10,Sort.DEFAULT_DIRECTION, "id"));
+        log.info("data : {}", aa.getContent().get(0));
+        log.info("data count : {}", aa.getTotalElements());
 
 
-      //  PageRequest pageRequest = new PageRequest(0,1, new Sort(Sort.Direction.DESC,"id"));
-
-//        Page<Report> result = mapRepository.findById(Integer.toUnsignedLong(1), pageRequest);
-
-        //List<Report> reports = result.getContent();
-        //List<Report>  mapTruckList = ((MapRepository) repository).findAll();
-
-
-        //List<Report> reportList = mapRepository.findAll(new PageRequest(0, 4));
-
-        log.info("result size");
-//        log.info(Integer.toString(result.getSize()));
-//        log.info(Long.toString(result.getTotalElements()));
-
-
-        log.info("reports size");
-//       log.info(Integer.toString(reports.size()));
-        log.info("mapTruckList size");
-        //log.info(Integer.toString(mapTruckList.size()));
-
-
-        log.info("reports length");
-//log.info(Integer.toString(reports.stream().toArray().length));
-        log.info("get map data ");
-//        log.info(reports.get(0).getLatitude().toString());
-
-
-        //Page<Report> reports = mapRepository.findAll(PageRequest.of(1,20));
-       // List<Report> truckLists = new ArrayList<Report>();
-
-
-
-        //log.info(mapTruckList.get(0).getLatitude().toString());
-
-
-        //System.out.println(truckList.get(0).getLatitude());
-       // log.info(truckList.get(0).getLatitude().toString());
-
-
-//        for(int i=0; i<truckList.size();i++) {
-//
-//            this.latitude = truckList.get(i).getLatitude();
-//            this.longitude = truckList.get(i).getLongitude();
-//
-//            double distanceResult = distance(latitude, longitude, this.latitude, this.longitude);
-//
-//            if(distanceResult <= 0.25){
-//                mapTruckList.add(truckList.get(i));
-//            }
-//        }
-//        return truckList;
-        return reports;
+        return aa.getContent();
 
     }
 

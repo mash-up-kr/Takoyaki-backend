@@ -1,5 +1,6 @@
 package org.mashup.takoyaki.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.mashup.takoyaki.entity.value.AccessToken;
 
@@ -37,6 +38,7 @@ public class User {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private List<Report> reportList;
 
