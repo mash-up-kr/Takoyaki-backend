@@ -3,8 +3,18 @@ package org.mashup.takoyaki.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.mashup.takoyaki.common.type.RegionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import org.mashup.takoyaki.common.type.RegionType;
+import org.mashup.takoyaki.entity.Region;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import java.time.LocalDate;
+
+
 
 @Data
 public class ReportDto {
@@ -13,6 +23,7 @@ public class ReportDto {
     private String truckName;
 
     private String description;
+
 
     @JsonProperty(value = "expiration_date")
     private LocalDate expirationDate;
@@ -24,4 +35,7 @@ public class ReportDto {
 
     private double longitude;
 
+
 }
+
+

@@ -6,6 +6,8 @@ import org.mashup.takoyaki.dto.UpdateUserDto;
 import org.mashup.takoyaki.entity.User;
 import org.mashup.takoyaki.entity.value.AccessToken;
 import org.mashup.takoyaki.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +34,7 @@ public class UserController {
         response.setCode(HttpStatus.OK.value());
         response.setMsg(HttpStatus.OK.toString());
         response.setResult(userService.registerUser().getAccessToken());
+        log.info("User plz");
 
         return response;
     }
