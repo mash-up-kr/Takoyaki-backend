@@ -47,15 +47,31 @@ public class MapServiceImpl implements MapService {
     public List<Report> getMapTruck(double userLatitude, double userLongitude){
        //report = mapRepository.find
 
-        log.info("from Client lat");
+        log.info("from Client lattitude");
         log.info(Double.toString(userLatitude));
 
-        Page<Report> aa = mapRepository.findAll(PageRequest.of(0,10,Sort.DEFAULT_DIRECTION, "id"));
-        log.info("data : {}", aa.getContent().get(0));
-        log.info("data count : {}", aa.getTotalElements());
+        Page<Report> getPagingTrucks = mapRepository.findAll(PageRequest.of(0,10,Sort.DEFAULT_DIRECTION, "id"));
+        log.info("data : {}", getPagingTrucks.getContent().get(0));
+        log.info("data count : {}", getPagingTrucks.getTotalElements());
+
+        List<Report> truckLists = new ArrayList<Report>();
+        truckLists = getPagingTrucks.getContent();
+
+        List<Report> resultTruckLists = new ArrayList<Report>();
 
 
-        return aa.getContent();
+        for(int i=0; i<truckLists.size(); i++){
+            this.latitude = truckLists.get(i).getLatitude();
+            this.longitude = truckLists.get(i).getLongitude();
+
+            double distanceResult = distance(userLatitude, userLongitude, latitude, longitude);
+
+            if(distanceResult <= 2.5){
+                resultTruckLists.add(truckLists.get(i));
+            }
+        }
+
+        return resultTruckLists;
 
     }
 
